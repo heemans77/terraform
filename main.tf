@@ -35,9 +35,27 @@ resource "aws_instance" "my_ec2" {
   instance_type = "t2.micro"
   key_name      = "terraform"
 
-  vpc_security_group_ids = [aws_security_group.web_sg.id]  # ← Connect SG here
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
 
   tags = {
     Name = "TerraformTestInstance"
+  }
+}
+
+# S3 BUCKET
+resource "aws_s3_bucket" "terraform_bucket" {
+  bucket        = "my-terraform-demo-bucket-2025-1"
+  force_destroy = true
+
+  tags = {
+    Name = "TerraformBucket"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "versioning" {
+  bucket = aws_s3_bucket.terraform_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
