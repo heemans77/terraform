@@ -42,6 +42,12 @@ resource "aws_instance" "my_ec2" {
   }
 }
 
+# ELASTIC IP
+resource "aws_eip" "my_eip" {
+  instance = aws_instance.my_ec2.id
+  domain = "vpc"
+}
+
 # S3 BUCKET
 resource "aws_s3_bucket" "terraform_bucket" {
   bucket        = "my-terraform-demo-bucket-2025-1"
